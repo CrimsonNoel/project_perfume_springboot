@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.Board">
+
+
+
+	<!-- insert,update,delete는 resultType X -->
+	<!-- 마이바티스: insertBoard에서 파일선택안하고 등록버튼누르면 오류발생. jdbcType=VARCHAR를 넣으면 해결 -->
+
+
+	<insert id="insertBoard" parameterType="board">
+		insert into board2 values
+		(boardseq2.nextval,#{boardid},#{name},#{subject},#{content},#{image,
+		jdbcType=VARCHAR},sysdate,0)
+	</insert>
+
+	<select id="boardCount" parameterType="String" resultType="int">
+		select nvl(count(*),0) from board2 where boardid = #{boardid}
+	</select>
+
+	<select id="boardList" parameterType="map" resultType="board">
+		select *
+		from (
+		select rownum rnum, a.* from
+		(select * from board2 where
+		boardid =
+		#{boardid}
+		order by num desc) a) where rnum BETWEEN #{start}
+		and #{end}
+	</select>
+
+	<select id="boardOne" parameterType="int" resultType="board">
+		select *
+		from board2 where num = #{num}
+	</select>
+
+	<update id="boardUpdate" parameterType="board">
+		update board2 set boardid
+		= #{boardid}, subject = #{subject},
+		content = #{content}, image =
+		#{image} where num = #{num}
+	</update>
+
+	<delete id="boardDelete" parameterType="int">
+		delete from board2 where
+		num = #{num}
+	</delete>
+
+	<delete id="boardDelete2" parameterType="int">
+		delete from
+		boardcomment2 where num = #{num}
+	</delete>
+
+	<insert id="insertComment" parameterType="map">
+		insert into
+		boardcomment2 values
+		(boardcomseq2.nextval,#{num},#{id},#{name},#{comment},sysdate)
+	</insert>
+
+	<select id="commentList" parameterType="int"
+		resultType="comment">
+		select * from boardcomment2 where num = #{num} order by
+		regdate desc
+	</select>
+
+	<select id="commentOne" parameterType="int" resultType="comment">
+		select *
+		from boardcomment2 where ser = #{ser}
+	</select>
+	
+	<select id="commentOne2" parameterType="int" resultType="comment">
+		select *
+		from boardcomment2 where num = #{num}
+	</select>
+
+	<delete id="commentDelete" parameterType="int">
+		delete from
+		boardcomment2 where ser = #{ser}
+	</delete>
+	
+	<update id="readCntUpdate" parameterType="int">
+		update board2 set readcnt = readcnt + 1 where num = #{num}
+	</update>
+	
+	<select id="commentName" parameterType="String" resultType="comment">                                 
+		select * from boardcomment2 where id = #{id} order by regdate desc
+	</select>
+	
+
+
+
+
+
+	<select id="commentListAdmin" parameterType="map" resultType="comment">
+		select *
+		from (
+		select rownum rnum, a.* from
+		(select * from boardcomment2
+		order by regdate desc) a) where rnum BETWEEN #{start}
+		and #{end}
+	</select>
+	<select id="commentCountAdmin" parameterType="String" resultType="int">
+		select nvl(count(*),0) from boardcomment2
+	</select>
+
+</mapper>

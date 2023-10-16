@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.Order">
+	
+	<insert id="insertOrder" parameterType="order">
+		insert into order2 values 
+		(#{ordernum}, #{id}, #{name}, #{tel}, #{zipcode}, #{address}, #{detailaddress}, #{result}, #{delivercost}, sysdate)
+	</insert>
+	
+	<insert id="insertOrderItem" parameterType="orderItem">
+		insert into orderitem values 
+		(orderitemseq.nextval, #{ordernum}, #{prodnum}, #{quantity}, #{price})
+	</insert>
+	
+	<select id="orderList" parameterType="string" resultType="order" fetchSize="1000">
+		select * from order2 where id = #{id} order by regdate desc
+	</select>
+	
+	<select id="orderOne" parameterType="string" resultType="order">
+		select * from order2 where ordernum = #{ordernum}
+	</select>
+	
+	<select id="orderItemList" parameterType="string" resultType="orderItem" fetchSize="1000">
+		select * from orderitem where ordernum = #{ordernum} order by prodnum desc
+	</select>
+	
+	<update id="orderUpdate" parameterType="order">
+		update order2 set result = #{result} where ordernum = #{ordernum}
+	</update>
+	
+	<select id="orderCount" parameterType="string" resultType="int">
+		select nvl(count(*),0) from order2
+	</select>
+	
+	<select id="orderListAdmin" parameterType="map" resultType="order">
+		select * from ( 
+		select rownum rnum, a.* from
+		(select * from order2 order by id, regdate desc) a) 
+		where rnum BETWEEN #{start} and #{end}
+	</select>
+	
+	<select id="reviewOrderItem" parameterType="int" resultType="orderitem">
+		select * from orderitem where prodnum = #{prodnum}
+	</select>
+
+</mapper>

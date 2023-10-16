@@ -1,0 +1,128 @@
+body{
+    background-color: #f4f6f7;
+    font-size: 14px;
+    color: #222;
+    line-height: 1.5em;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    color:#222
+}
+
+.member{
+    /* border: 1px solid #000; */
+    width: 500px;
+    margin: auto;
+    padding: 0 2px;
+}
+
+.singup-header {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+
+.member .field {
+    /* border: 1px solid red; */
+    margin-bottom: 5px;
+
+}
+
+.member .field b {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.member input:not(input[type="radio"]), .member select {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    border: 1px solid #dadada;
+}
+
+.member input [type=button],
+.member input [type=submit] {
+    background-color: #2DB400;
+    color: #fff;
+}
+
+.field.birth div {
+    display: flex;
+    /* 칸사이에 간격을 떨어뜨림 */
+    gap: 10px;
+}
+
+.field.gender div {
+    border: 1px solid #dadada;
+    padding: 15px;
+    background-color: #fff;
+}
+
+.field.tel-number div{
+    display: flex;
+}
+
+.field.tel-number div input:nth-child(1){
+    flex: 2;
+}
+
+.field.tel-number div input:nth-child(2){
+    flex:1 ;
+}
+
+.placehold-text{
+    position: relative;
+    display: block;
+}
+
+.placehold-text:before {
+    position: absolute;
+    top: 13px;
+    right: 20px;
+}
+
+.userpw{
+    background: #fff url(./images_Naver/icon-01.png) no-repeat right 20px center;
+    background-size: 20px;
+}
+
+.userpw-confirm{
+    background: #fff url(./images_Naver/icon-02.png) no-repeat center right 20px ;
+    background-size: 20px;
+}
+
+.member-footer{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.member-footer div a:hover{
+    text-decoration: underline;
+    color: #f5f6f7;
+}
+
+.member-footer div a:after{
+    content:"|";
+    font-size: 10px;
+    color: #ddd;
+    margin-right: 5px;
+    margin-left: 7px;
+    transform: translateY(-2px);
+    display: inline-block;
+}
+
+.member-footer div a:last-child :after {
+    display: none;
+}
+
+@media (max-width:768px) {
+    .member {
+        width: 100%;
+    }
+}

@@ -1,0 +1,9 @@
+.submenubar {
+    background-color: #fff;
+}
+
+.submenubar ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}

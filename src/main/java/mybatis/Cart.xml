@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.Cart">
+	
+	<insert id="insertCart" parameterType="cart">
+		insert into cart values
+		(cartseq.nextval, #{id}, #{prodnum}, #{prodname}, #{quantity}, #{price}, #{result}, sysdate)
+	</insert>
+	
+	<select id="cartSelect" parameterType="map" resultType="cart">
+		select * from cart where id = #{id} and prodnum = #{prodnum}
+	</select>
+	
+	<update id="quantityUpdate" parameterType="map">
+		update cart set quantity = #{quantity} where id = #{id} and prodnum = #{prodnum}
+	</update>
+	
+	<select id="cartList" parameterType="string" resultType="cart">
+		select * from cart where id = #{id}
+	</select>
+	
+	<select id="cartOne" parameterType="int" resultType="cart">
+		select * from cart where cartid = #{cartid}
+	</select>
+	
+	<update id="cartUpdate" parameterType="cart">
+		update cart set quantity = #{quantity} where cartid = #{cartid}
+	</update>
+	
+	<delete id="cartDelete" parameterType="int">
+		delete from cart where cartid = #{cartid}
+	</delete>
+	
+	<delete id="orderedCartDelete" parameterType="cart">
+		delete from cart where id = #{id} and prodnum = #{prodnum}
+	</delete>
+	
+</mapper>

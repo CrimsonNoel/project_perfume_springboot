@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.Survey">
+	
+	<!-- 설문결과등록 -->
+	<insert id="insertSurvey" parameterType="survey">
+		insert into answer
+		values
+		( surveyseq.nextval, #{id}, #{ansGender}, #{ans1}, #{ans2},
+		#{prodname}, sysdate)
+	</insert>
+    
+    <!-- 설문조사에 딱맞는 상품 찾기 or 중복될 경우 동일조건 랜덤 추출 -->
+	<select id="ProductImage" parameterType="map"
+		resultType="product">
+		select * from(
+    	select 1, a.* from product a where prodgender = #{ansGender}
+    	and prodans1 like '%${ans1}%' and prodans2 like '%${ans2}%'
+    	order by DBMS_RANDOM.RANDOM) where
+    	  rownum = 1
+	</select>
+	
+	<!-- 조건에 맞는 상품이 없는 경우 같은 선호카테고리 상품중 추천하기 -->
+	<select id="ProductImage2" parameterType="map"
+		resultType="product">
+		select * from( select * from product where prodgender = #{ansGender} 
+		and prodans1 like '%${ans1}%'
+        order by DBMS_RANDOM.RANDOM)
+        where rownum = 1
+	</select>
+	
+	<!-- 날씨 데이터에 따른 향수하나 추천 -->
+	<select id="ProductImage3" parameterType="map"
+		resultType="product">
+		select * from( select * from product where prodans1 like '%${ans1}%'
+        order by DBMS_RANDOM.RANDOM)
+        where rownum = 1
+	</select>
+	
+	<!-- 설문결과에 저장된 성별,상품 이름으로 상품정보 가져오기 -->
+	<select id="ProductImageN" parameterType="map"
+		resultType="product">
+		select * from product where prodgender = ${ansGender} and name like '%${prodname}%'
+	</select>
+	
+	<!-- 이전 결과 표시창-->
+	<select id="surveyList" parameterType="string"
+		resultType="survey">
+		select * from ( select rownum rnum, a.* from (
+		select * from answer where id = #{id}
+		order by ser desc) a)
+		where rnum between 1 and 4
+	</select>
+	
+	<!-- 설문 결과에 저장된 선호향 그래프 -->
+	<select id="AnswerDoughnut" parameterType="map" resultType="survey">
+		select  ans1, count(*) doughnut from answer
+		where ansGender = #{ansGender} and ans1 like '%${ans1}%'
+		group by  ans1
+		order  by  1
+	</select>
+	
+	<!-- 가장 많은 득표를 받은 향수 -->
+	<select id="surveyNo1" parameterType="map" resultType="product"> 
+		  select * from product 
+    	where name = (   
+     	select prodname from (
+    	select prodname, count(*) ser from answer
+		where ansGender = #{ansGender}
+		group by prodname
+		order  by ser desc )
+    	where rownum = 1)
+	</select>
+
+</mapper>

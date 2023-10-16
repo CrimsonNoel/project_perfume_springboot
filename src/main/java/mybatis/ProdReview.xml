@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.ProdReview">
+
+	<insert id="insertProdReview" parameterType="prodReview">
+		insert into prodreview values
+		(reviewnumseq.nextval,#{prodnum},#{id},#{content},#{rating},sysdate)
+	</insert>
+	
+	<update id="reviewUpdate" parameterType="prodReview">
+		update prodreview set content = #{content}, rating = #{rating} 
+		where reviewnum = #{reviewnum}
+	</update>
+	
+	<delete id="deleteReview" parameterType="int">
+		delete from prodreview where reviewnum = #{reviewnum}
+	</delete>
+	
+	<select id="checkReview" parameterType="map" resultType="prodReview">
+		select reviewnum from prodreview where id = #{id} and prodnum = #{prodnum}
+	</select>
+
+	<select id="reviewList" parameterType="int" resultType="prodReview">
+		select * from prodreview where prodnum = #{prodnum}
+		order by reviewnum desc
+	</select>
+	
+	<select id="reviewTotal" parameterType="int" resultType="int">
+  		select count(*)
+  		from prodreview
+  		where prodnum = #{prodnum}
+  	</select>
+  	
+  	<select id="reviewOne" parameterType="int" resultType="prodReview">
+  		select *
+		from prodreview where reviewnum = #{reviewnum}
+  	</select>
+
+</mapper>

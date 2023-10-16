@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sitemesh>
+	<!--  WEB-INF/sitemesh3.xml -->
+	<mapping path="/home/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/member/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/product/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/shop/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/order/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/board/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/test/*"  decorator="/layout/layout.jsp" />
+	<mapping path="/cart/*"  decorator="/layout/layout.jsp" />
+	
+	<mapping path="*/boardDeleteForm" exclude="true" />
+	<mapping path="*/boardCommentPro" exclude="true" />
+	<mapping path="*/surveyStart" exclude="true" />
+	<mapping path="*/survey01" exclude="true" />  
+	<mapping path="*/survey02" exclude="true" /> 
+	<mapping path="*/survey03" exclude="true" />
+	<mapping path="*/surveyResult" exclude="true" />     
+	<mapping path="*/cartDeleteForm" exclude="true" />
+	<mapping path="*/productDeleteForm" exclude="true" />
+	<mapping path="*/reviewEnroll/*" exclude="true" />
+	<mapping path="*/reviewUpdate" exclude="true" />
+	<mapping path="*/reviewDelete" exclude="true" />
+</sitemesh>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+    ">
+
+	<!-- web 환경에서 객체 주입을 위한 설정: @Autowired, @Controller... 기능 사용 -->
+	<mvc:annotation-driven />
+	<mvc:view-controller path="/index"
+		view-name="index" />
+	<!-- base-package="controller" 패키지를 먼저 scan해서 @Component를 가진 클래스 객체 생성 -->
+	<context:component-scan
+		base-package="controller, service" />
+
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>oracle.jdbc.OracleDriver</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>jdbc:oracle:thin:@localhost:1521:xe</value>
+		</property>
+		<property name="user">
+			<value>kic</value>
+		</property>
+		<property name="password">
+			<value>1111</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>20</value>
+		</property><!-- 최대 연결 객체 갯수 -->
+		<property name="minPoolSize">
+			<value>3</value>
+		</property> <!-- 최소 연결 객체 갯수 -->
+		<property name="initialPoolSize">
+			<value>5</value>
+		</property> <!-- 초기 연결 객체 갯수 -->
+		<property name="acquireIncrement">
+			<value>5</value>
+		</property> <!-- 연결 객체 증가 갯수 -->
+	</bean>
+
+	<!-- mybatis db -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis/mybatis-config.xml" />
+		<!-- <property name="mapperLocations" value="classpath:mapper/*.xml"></property> -->
+	</bean>
+	<bean class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+
+	<mvc:resources mapping="/view/board/images/**"
+		location="/WEB-INF/view/board/images/" />
+
+	<mvc:resources mapping="/view/product/images/**"
+		location="/WEB-INF/view/product/images/" />
+
+	<mvc:resources mapping="/images/**"
+		location="/WEB-INF/resource/images/" />
+
+	<mvc:resources mapping="/css/**"
+		location="/WEB-INF/resource/css/" />
+
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/product/productForm"/>
+			<mvc:mapping path="/product/productPro"/>
+			<mvc:mapping path="/product/productUpdateForm"/>
+			<mvc:mapping path="/product/productUpdatePro"/>
+			<mvc:mapping path="/product/productDeleteForm"/>
+			<mvc:mapping path="/product/productDeletePro"/>
+			<mvc:mapping path="/product/productManagement" />
+			<mvc:mapping path="/board/boardForm" />
+			<mvc:mapping path="/board/boardPro" />
+			<mvc:mapping path="/board/boardUpdateForm" />
+			<mvc:mapping path="/board/boardUpdatePro" />
+			<mvc:mapping path="/board/boardDeleteForm" />
+			<mvc:mapping path="/board/CommentManagement" />
+			<mvc:mapping path="/member/memberList" />
+			<mvc:mapping path="/member/adminMemberDelete" />
+			<mvc:mapping path="/order/orderManagement" />
+			<mvc:mapping path="/order/orderStateUpdate" />
+			<ref bean="admin"/>
+		</mvc:interceptor>
+		<mvc:interceptor>			
+			<mvc:mapping path="/survey/surveyStart" />
+			<mvc:mapping path="/survey/surveyResult" />
+			<mvc:mapping path="/survey/survey01" />
+			<mvc:mapping path="/survey/survey02" />
+			<mvc:mapping path="/survey/survey03fruit" />
+			<mvc:mapping path="/survey/survey03flower" />
+			<mvc:mapping path="/survey/survey03wood" />
+			<mvc:mapping path="/cart/cartPro" />
+			<mvc:mapping path="/cart/cartList" />
+			<mvc:mapping path="/cart/cartUpdate" />
+			<mvc:mapping path="/cart/cartDelete" />
+			<mvc:mapping path="/member/memberInfo" />
+			<mvc:mapping path="/member/memberUpdateForm" />
+			<mvc:mapping path="/member/memberUpdatePro" />
+			<mvc:mapping path="/member/memberPassForm" />
+			<mvc:mapping path="/member/memberPassPro" />
+			<mvc:mapping path="/member/memberDeleteForm" />
+			<mvc:mapping path="/member/memberDeletePro" />
+			<mvc:mapping path="/order/order" />
+			<mvc:mapping path="/order/orderPro" />
+			<mvc:mapping path="/order/orderList" />
+			<mvc:mapping path="/order/orderDetail" />
+			<mvc:mapping path="/order/orderCancelForm" />
+			<mvc:mapping path="/order/orderCancelPro" />
+			<mvc:mapping path="/order/orderResult" />
+			<mvc:mapping path="/order/orderConfirm" />
+			<mvc:mapping path="/board/myComment" />
+			<ref bean="login"/>
+		</mvc:interceptor>	
+	</mvc:interceptors>
+	<bean id="login" class="login.LoginUser" />
+	<bean id="admin" class="login.LoginAdmin" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+
+
+
+</beans>

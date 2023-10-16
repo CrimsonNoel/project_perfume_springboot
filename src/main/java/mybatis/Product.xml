@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.Product">
+
+	<insert id="insertProduct" parameterType="product">
+		insert into product values
+		(productseq.nextval,#{name},#{price},#{stock},#{info},#{image},#{prodgender},#{prodans1},#{prodans2},sysdate,#{detail})
+	</insert>
+
+	<select id="productCount" parameterType="map" resultType="int">
+		select nvl(count(*),0) from product   ${prodans1}	
+	</select>
+
+	<select id="productList" parameterType="map" resultType="product">
+		select * from ( 
+		select rownum rnum, a.* from
+		(select * from product  ${prodans1}
+		  ${order}) a) 
+		where rnum BETWEEN #{start} and #{end}
+	</select>
+	<!-- <select id="productManagement" parameterType="map" resultType="product">
+		select * from ( 
+		select rownum rnum, a.* from
+		(select * from product  ${prodans1}
+		  ${order}) a) 
+		where rnum BETWEEN #{start} and #{end}
+	</select> -->
+	
+	
+	
+	<select id="productOne" parameterType="int"  resultType="product">
+    	select * from product where prodnum = #{prodnum}
+    </select>
+	
+	<update id="productUpdate"  parameterType="product" >
+		update product set name = #{name}, price = #{price}, 
+		stock = #{stock}, info = #{info}, image = #{image},
+		prodgender = #{prodgender}, prodans1 = #{prodans1}, 
+		prodans2 = #{prodans2}, detail = #{detail} where prodnum = #{prodnum}
+	</update>
+
+	<delete id="productDelete"  parameterType="int">
+		delete from product where prodnum = #{prodnum}
+	</delete>
+	
+	<delete id="productDelete2" parameterType="int">
+		delete from prodreview where prodnum = #{prodnum}
+	</delete>
+	
+	<select id="orderProductList" parameterType="map" resultType="product">
+		select * from product where prodnum = #{prodnum}
+	</select>
+	
+	<update id="stockUpdate" parameterType="product">
+		update product set stock = #{stock} where prodnum = #{prodnum}
+	</update>
+
+
+</mapper>
